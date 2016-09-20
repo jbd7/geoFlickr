@@ -17,7 +17,7 @@ $j(document).ready(function () {
             img_html = $j('<div>').append($j(this).clone()).remove().html()
             matches = re.exec(img_html);
             if (matches) {
-                show_toolbar(matches[1], $j(this).offset());
+                geoflickr_show_toolbar(matches[1], $j(this).offset());
             }
         }, function () {
             $j('.geoflickr_flickr-toolbar').hide();
