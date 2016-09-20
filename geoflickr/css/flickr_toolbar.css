@@ -1,4 +1,4 @@
-.flickr-toolbar {
+.geoflickr_flickr-toolbar {
 	-moz-background-clip:border;
 	-moz-background-inline-policy:continuous;
 	-moz-background-origin:padding;
@@ -12,21 +12,19 @@
 }
 
 
-.flickr-toolbar img {	
+.geoflickr_flickr-toolbar img {	
 	padding: 1px;
-	
 }
 
-.flickr-toolbar a {	
+.geoflickr_flickr-toolbar a {	
 	color: #EEEEEE;
-	
 }
 
-.flickr-toolbar a:hover {
+.geoflickr_flickr-toolbar a:hover {
 	background:rgba(221, 221, 221, 0) none repeat scroll 0 0;
 	color: #AAAAAA;
 }
  
-div.flickr-toolbar:hover {
+div.geoflickr_flickr-toolbar:hover {
 	border:1px solid #EEEEEE;
 	}
