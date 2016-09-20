@@ -48,7 +48,7 @@ function geoflickr_init() {
 					mapTypeId: google.maps.MapTypeId.HYBRID
 				};
 
-    				map = new google.maps.Map(document.getElementById("map"),mapOptions);
+    				map = new google.maps.Map(document.getElementById("geoflickr_map"),mapOptions);
 
 				var infowindow = new google.maps.InfoWindow({
 					    content: description
@@ -64,7 +64,7 @@ function geoflickr_init() {
 				errorhtml = "<h1>Sorry! Cannot show location map</h1>";
 				errorhtml += "<p>Additionally Flickr said: "+geodata.message+"</p>";
 				
-				$j("#map").html(errorhtml);
+				$j("#geoflickr_map").html(errorhtml);
 			}		
     	}
     );
