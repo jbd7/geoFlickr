@@ -1,0 +1,39 @@
+.geoflickr_flickr-toolbar {
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:rgba(238, 238, 238, 0.0) none repeat scroll 0 0;
+	border:0px solid #EEEEEE;
+	padding:2px;
+	cursor:pointer;
+	display:none;
+	overflow:hidden;
+	position:absolute;
+	z-index:0;
+}
+
+
+.geoflickr_flickr-toolbar img {	
+	padding: 1px;
+}
+
+.geoflickr_flickr-toolbar a {	
+	color: #EEEEEE;
+}
+
+.geoflickr_flickr-toolbar a:hover {
+	background:rgba(221, 221, 221, 0) none repeat scroll 0 0;
+	color: #AAAAAA;
+}
+ 
+div.geoflickr_flickr-toolbar:hover {
+	border:1px solid #EEEEEE;
+}
+div#TB_title {
+	background-color:#101010!important; height:27px;
+}
+
+#TB_closeWindowButton:hover .tb-close-icon,
+#TB_closeWindowButton:focus .tb-close-icon {
+	color: #808080!important;-webkit-box-shadow:none!important; box-shadow:none!important;
+} 
