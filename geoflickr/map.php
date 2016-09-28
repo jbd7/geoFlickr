@@ -1,102 +1,64 @@
 <?php
-	require_once( dirname(dirname(dirname(dirname(__FILE__)))) . '/wp-load.php');
+/**
+* Template Name: Blank Page
+*
+*/
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html <?php language_attributes(); ?> style="margin-top:0px!important; padding-top:0px!important">
 <head>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
-<script type='text/javascript' src='<?php echo get_option('siteurl'); ?>/wp-includes/js/jquery/jquery.js'></script>
+<meta charset="<?php bloginfo( 'charset' ); ?>" />
 
-<script type="text/javascript">
+<!-- page title, displayed in your browser bar -->
+<title><?php bloginfo('name'); ?> | <?php is_home() ? bloginfo('description') : wp_title(''); ?></title>
 
-$j=jQuery.noConflict();
+<?php
+
+function geoflickr_load_mapjs() {
+	//Enqueue jQuery for use of geoflickr_map.js
+	wp_enqueue_script('jquery');
+
+	//Prepare and enqueue the Google Maps API
+	$google_js_url = "https://maps.google.com/maps/api/js";
+	$google_api_key = get_option('geoflickr_googleapikey');
+	if ($google_api_key !== '') {$google_js_url .= "?key=" . $google_api_key;}
+	wp_enqueue_script( 'geoflickr_googlemaps', $google_js_url);
+
+	//Enqueue geoflickr_map
+	$geoflickr_flickrMapJs = plugin_dir_url( __FILE__ ) . 'js/geoflickr_map.js';
+	wp_register_script('geoflickr_flickrMapJs', $geoflickr_flickrMapJs, array('jquery'));
+	wp_enqueue_script( 'geoflickr_flickrMapJs');
+	wp_enqueue_script( 'wprmenu.js');
+	}
+
+function geoflickr_load_mapcss() {
+	//Deregister styles that may conflict with the blank template
+	global $wp_styles;
+    	$wp_styles->queue = array();
+	//Enqueue blank template style
+	$geoflickr_flickrMapCss = plugin_dir_url( __FILE__ ) . 'css/geoflickr_map.css';
+	wp_register_style('geoflickr_flickrMapCss', $geoflickr_flickrMapCss);
+	wp_enqueue_style( 'geoflickr_flickrMapCss');
+	}
 
 
-var api_key = "<?php echo get_option('geoflickr_flickrapikey') ?>";
+add_action('wp_enqueue_scripts','geoflickr_load_mapjs', 99);
+add_action('wp_enqueue_scripts','geoflickr_load_mapcss', 99);
 
-var centerLatitude = 44.339206;
-var centerLongitude = 1.208160;
-var description = '';
-
-var startZoom = 13;
-
-var map;
+wp_head();
 
 
-
-function geoflickr_init() {	    	
-    $j.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.geo.getLocation&api_key='+api_key+'&photo_id=<?php echo $_GET['flickr_id']; ?>&format=json&jsoncallback=?',
-        function(geodata){
-			if(geodata.stat != 'fail') { 
-				centerLatitude  = geodata.photo.location.latitude;
-				centerLongitude = geodata.photo.location.longitude;
-
-				if (geodata.photo.location.locality){
-					description += geodata.photo.location.locality._content+", "
-				}
-
-				if (geodata.photo.location.county){
-					description += geodata.photo.location.county._content+", "
-				}
-				description += "<br/>"+geodata.photo.location.region._content+", "+geodata.photo.location.country._content+". <p style='font-size: 6pt' >Location description as supplied by Flickr. May be incomplete or inaccurate!</p>";
-
-				var latlng = new google.maps.LatLng(centerLatitude, centerLongitude);
-				var mapOptions = {
-					zoom: startZoom,
-					center: latlng,
-					mapTypeId: google.maps.MapTypeId.HYBRID
-				};
-
-    				map = new google.maps.Map(document.getElementById("geoflickr_map"),mapOptions);
-
-				var infowindow = new google.maps.InfoWindow({
-					    content: description
-				});
-
-				var marker = new google.maps.Marker({position:latlng, map:map, title: "Click for address"});
-
-				google.maps.event.addListener(marker, 'click', function() {
-  					infowindow.open(map,marker);
-				});
-
-			} else {
-				errorhtml = "<h1>Sorry! Cannot show location map</h1>";
-				errorhtml += "<p>Additionally Flickr said: "+geodata.message+"</p>";
-				
-				$j("#geoflickr_map").html(errorhtml);
-			}		
-    	}
-    );
-}
-
-   
-window.onload = geoflickr_init;
-
-</script>
-
-<style>
-
-body {
-	font-family: sans-serif;
-	margin:0px;
-	padding:0px;
-	text-align: center;	
-}
-
-h1 {
-	text-align: center;
-	margin: 0px;
-	font-family: sans-serif;
-}
-
-</style>
-
+?>
 </head>
 
 <body>
     <div id="geoflickr_map" style="width: 628px; height: 410px"></div>
+	<script type="text/javascript">
+		var flickr_api_key = "<?php echo get_option('geoflickr_flickrapikey') ?>";
+		var flickr_id = <?php echo $_GET['geoflickr_id']; ?>;
+		window.onload = geoflickr_init(flickr_api_key, flickr_id);
+	</script>
+
 </body>
 
 </html>
-
