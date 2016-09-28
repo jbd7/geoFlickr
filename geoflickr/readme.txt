@@ -68,4 +68,3 @@ Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who dev
 = 1.0 (20160917) = 
 * Fixed old variables calls with up-to-date ones that support HTTPS
 * Fixed links to Flickr since it enforced HTTPS
-
