@@ -2,8 +2,9 @@
 Contributors: jbd7
 Tags: flickr, geo, geotag, map, maps, google maps, google map, mapping
 Requires at least: 3.0
-Tested up to: 4.6
-Stable tag: 1
+Requires PHP: 5.3
+Tested up to: 5.0.1
+Stable tag: 1.02
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,6 +65,12 @@ Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who dev
 3. Thickbox popup containing the map where the photo was taken
 
 == Changelog ==
+
+= 1.02 (20181214) = 
+* Tested with Wordpress 5.0.1
+
+= 1.01 (20170410) = 
+* Fixed map not loading when _content is empty
 
 = 1.0 (20160917) = 
 * Fixed old variables calls with up-to-date ones that support HTTPS
