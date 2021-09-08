@@ -5,7 +5,7 @@
 	 Plugin URI: https://github.com/jbd7/geoFlickr/
 	 Description: Displays a "location taken map" for all embedded Flickr photos that contain coordinates.
 	 Author: jbd7
-	 Version: 1.0
+	 Version: 1.1
 	 */
 
 	# Thanks to the original author of Flickr foto info: Tarique Sani (www.sanisoft.com)
@@ -33,7 +33,8 @@
 
 			wp_localize_script( 'geoflickr_flickrToolbarJs', 'geoflickr_vars', $translation_array );
 
-			wp_enqueue_script( 'geoflickr_flickrToolbarJs');
+			wp_enqueue_script( 'geoflickr_flickrToolbarJs', '', array(), null, true);
+		
 
 	}
 
@@ -56,6 +57,7 @@
 		return $vars;
 	}
 	add_filter( 'query_vars', 'geoflickr_register_query_vars' );
+
 
 
 	function geoflickr_load_map( $template ) {
@@ -111,7 +113,7 @@
 					<tr>
 						<th scope="row"></th>
 						<td>
-						Can be left blank, but Google recommends one for Maps API v3.</br>Enter your Google API key enabled for Maps, which can be requested via <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" target="_blank">Google Developers</a>. It's free up to 2500 requests per day.
+						Can be left blank, but Google recommends one for Maps API v3.</br>Enter your Google API key enabled for Maps, which can be requested via <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" target="_blank">Google Developers</a>. It's free up to USD 200 of monthly usage, which covers about 1000 GeoFlickr requests per day.
 						</td>
 					</tr>
 				</table>

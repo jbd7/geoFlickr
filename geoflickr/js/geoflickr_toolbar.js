@@ -4,7 +4,31 @@ re = new RegExp('<img.+src=[\'"].*flickr.com\/.*\/([^\'"]+?)_.*([^(_s|_t|_m)])\.
 
 toolbar_div = "";
 
-$j(document).ready(function () {
+$j(document).ready(geoflickr_findimages);
+
+// Find Flickr images when scrolling has stopped - from https://gomakethings.com/detecting-when-a-visitor-has-stopped-scrolling-with-vanilla-javascript/
+
+	// Setup isScrolling variable
+	var isScrolling;
+
+	// Listen for scroll events
+	window.addEventListener('scroll', function ( event ) {
+
+		// Clear our timeout throughout the scroll
+		window.clearTimeout( isScrolling );
+
+		// Set a timeout to run after scrolling ends
+		isScrolling = setTimeout(function() {
+
+			// Run the callback
+			//console.log( 'GeoFlickr Scrolling has stopped.' );
+			geoflickr_findimages();
+		}, 1001);
+
+	}, false);
+
+
+function geoflickr_findimages() {
 
     toolbar_div = $j("<div class='geoflickr_flickr-toolbar'></div>");
     $j('body').append(toolbar_div);
@@ -23,7 +47,23 @@ $j(document).ready(function () {
             $j('.geoflickr_flickr-toolbar').hide();
         })
     })
-})
+	
+    flickr_imageslazy = ($j("img[data-src *='flickr']"));
+	
+    $j(flickr_imageslazy).each(function () {
+
+        $j(this).hover(function () {
+            img_html = $j('<div>').append($j(this).clone()).remove().html()
+            matches = re.exec(img_html);
+            if (matches) {
+                geoflickr_show_toolbar(matches[1], $j(this).offset());
+            }
+        }, function () {
+            $j('.geoflickr_flickr-toolbar').hide();
+        })
+    })	
+	
+}
 
 
 function geoflickr_show_toolbar(flickr_id, image_offset) {
@@ -40,7 +80,7 @@ function geoflickr_show_toolbar(flickr_id, image_offset) {
     toolbar_top = parseInt(image_offset.top) + 10 - adjustment;
     toolbar_left = parseInt(image_offset.left) + 10;
 
-    toolbar_html = "<a href='?geoflickr_id=" + flickr_id + "&TB_iframe=true&height=400&width=600' class='thickbox' ><img title='Location' alt='Location' src='" + geoflickr_vars.geoflickrplugindirurl + "images/red_marker.16.png' ></a>"
+    toolbar_html = "<a href='?geoflickr_id=" + flickr_id + "&TB_iframe=true&height=400&width=600' class='thickbox' ><img title='Location' alt='Location' src='" + geoflickr_vars.geoflickrplugindirurl + "images/red_marker16.png' ></a>"
 
     $j(toolbar_div).html(toolbar_html).css({
         left: toolbar_left + 'px',

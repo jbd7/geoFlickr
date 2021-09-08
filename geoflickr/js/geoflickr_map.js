@@ -19,7 +19,16 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 				if (geodata.photo.location.county){
 					description += geodata.photo.location.county._content+", "
 				}
-				description += "<br/>"+geodata.photo.location.region._content+", "+geodata.photo.location.country._content+". <p style='font-size: 6pt' >Location description as supplied by Flickr. May be incomplete or inaccurate!</p>";
+				
+				if (geodata.photo.location.region){
+					description += geodata.photo.location.region._content+", "
+				}				
+				
+				if (geodata.photo.location.country){
+					description += geodata.photo.location.country._content
+				}				
+				
+				description += "<br/>"+". <p style='font-size: 6pt' >Location description as supplied by Flickr. May be incomplete or inaccurate!</p>";
 
 				var latlng = new google.maps.LatLng(centerLatitude, centerLongitude);
 				var mapOptions = {
