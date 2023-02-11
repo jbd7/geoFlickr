@@ -52,14 +52,14 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 			} else if (flickr_id) {
 				// Flickr API call failed despite a Photo_id
 				errorhtml = '<h2 style="color:grey;">Could not load map</h2>';
-				errorhtml += '<p style="color:grey;">Additionally, <a href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
+				errorhtml += '<p style="color:grey;">Additionally, <a style="color:grey;" href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
 				
 				$j("#geoflickr_map").html(errorhtml);
 	
 			} else {
 				// Flickr API call failed but no Photo_id was passed yet
 				errorhtml = '<h2 style="color:white;">Location map loading ...</h2>';
-				errorhtml += '<p style="color:white;">Additionally, <a href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
+				errorhtml += '<p style="color:white;">Additionally, <a style="color:white;" href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
 				
 				$j("#geoflickr_map").html(errorhtml);
 			}		
