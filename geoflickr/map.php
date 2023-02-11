@@ -28,17 +28,18 @@ function geoflickr_load_mapjs() {
 	//Enqueue jQuery for use of geoflickr_map.js
 	wp_enqueue_script('jquery');
 
-	//Prepare and enqueue the Google Maps API
-	$google_js_url = "https://maps.google.com/maps/api/js";
-	$google_api_key = get_option('geoflickr_googleapikey');
-	if ($google_api_key !== '') {$google_js_url .= "?key=" . $google_api_key;}
-	wp_enqueue_script( 'geoflickr_googlemaps', $google_js_url);
-
 	//Enqueue geoflickr_map
 	$geoflickr_flickrMapJs = plugin_dir_url( __FILE__ ) . 'js/geoflickr_map.js';
 	wp_register_script('geoflickr_flickrMapJs', $geoflickr_flickrMapJs, array('jquery', 'thickbox'));
 	wp_enqueue_script( 'geoflickr_flickrMapJs');
 	wp_enqueue_script( 'wprmenu.js');
+
+	//Prepare and enqueue the Google Maps API
+	$google_js_url = "https://maps.googleapis.com/maps/api/js";
+	$google_api_key = get_option('geoflickr_googleapikey');
+	if ($google_api_key !== '') {$google_js_url .= "?key=" . $google_api_key. "&callback=geoflickr_init";}
+	wp_enqueue_script( 'geoflickr_googlemaps', $google_js_url);
+	
 	}
 
 
