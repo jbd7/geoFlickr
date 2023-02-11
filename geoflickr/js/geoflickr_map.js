@@ -8,7 +8,7 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 
 	$j.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.geo.getLocation&api_key=' + flickr_api_key + '&photo_id=' + flickr_id + '&format=json&jsoncallback=?',
         function(geodata){
-			if(geodata.stat != 'fail') { 
+			if(geodata.stat != 'fail' && flickr_id) { 
 				centerLatitude  = geodata.photo.location.latitude;
 				centerLongitude = geodata.photo.location.longitude;
 
@@ -28,7 +28,7 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 					description += geodata.photo.location.country._content
 				}				
 				
-				description += "<br/>"+". <p style='font-size: 6pt' >Location description as supplied by Flickr. May be incomplete or inaccurate!</p>";
+				description += "<br/>"+". <p style='font-size: 6pt' >(Location description may be incomplete or inaccurate)</p>";
 
 				var latlng = new google.maps.LatLng(centerLatitude, centerLongitude);
 				var mapOptions = {
@@ -49,9 +49,17 @@ function geoflickr_init(flickr_api_key, flickr_id) {
   					infowindow.open(map,marker);
 				});
 
+			} else if (flickr_id) {
+				// Flickr API call failed despite a Photo_id
+				errorhtml = '<h2 style="color:grey;">Could not load map</h2>';
+				errorhtml += '<p style="color:grey;">Additionally, <a href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
+				
+				$j("#geoflickr_map").html(errorhtml);
+	
 			} else {
-				errorhtml = "<h1>Sorry! Cannot show location map</h1>";
-				errorhtml += "<p>Additionally Flickr said: "+geodata.message+"</p>";
+				// Flickr API call failed but no Photo_id was passed yet
+				errorhtml = '<h2 style="color:white;">Location map loading ...</h2>';
+				errorhtml += '<p style="color:white;">Additionally, <a href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
 				
 				$j("#geoflickr_map").html(errorhtml);
 			}		
