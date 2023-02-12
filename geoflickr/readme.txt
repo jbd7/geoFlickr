@@ -3,8 +3,8 @@ Contributors: jbd7
 Tags: flickr, geo, geotag, map, maps, google maps, google map, mapping
 Requires at least: 3.0
 Requires PHP: 5.3
-Tested up to: 5.8
-Stable tag: 1.1
+Tested up to: 6.1.1
+Stable tag: 1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -52,8 +52,9 @@ Upgrade to this one if you want to recover functionality, however, the EXIF butt
 
 == Usage ==
 
-There is nothing to do. Any post or page that has a photo from Flickr embedded will diplay a red balloon when hovering the mouse on the photo. The balloon will show only if the image has EXIF GPS coordinates on Flickr.
-A click on that balloon will show the map inside a Thickbox popup.
+Any post or page of the Wordpress site, that contains a photo embedded from Flickr, will diplay a red balloon when hovering the mouse on the photo. The balloon will show only if the image has EXIF GPS coordinates on Flickr. A click on that balloon will show the map inside a Thickbox popup.
+
+The plugin automatically considers all posts and pages.
 
 == Thanks ==
 
@@ -66,6 +67,11 @@ Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who dev
 3. Thickbox popup containing the map where the photo was taken
 
 == Changelog ==
+
+= 1.2 (20230212) = 
+* Tested with Wordpress 6.1.1
+* Updated API call to Google Maps
+* Added handling of response cases from the Flickr API 
 
 = 1.1 (20210908) = 
 * Tested with Wordpress 5.8
