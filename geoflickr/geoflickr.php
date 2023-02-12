@@ -5,7 +5,7 @@
 	 Plugin URI: https://github.com/jbd7/geoFlickr/
 	 Description: Displays a "location taken map" for all embedded Flickr photos that contain coordinates.
 	 Author: jbd7
-	 Version: 1.1
+	 Version: 1.2
 	 */
 
 	# Thanks to the original author of Flickr foto info: Tarique Sani (www.sanisoft.com)
