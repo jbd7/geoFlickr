@@ -1,7 +1,9 @@
 .geoflickr_flickr-toolbar {
-	-moz-background-clip:border;
+	background-clip:border-box;
+	-moz-background-clip:border-box;
 	-moz-background-inline-policy:continuous;
-	-moz-background-origin:padding;
+	background-origin:padding-box;
+	-moz-background-origin:padding-box;
 	background:rgba(238, 238, 238, 0.0) none repeat scroll 0 0;
 	border:0px solid #EEEEEE;
 	padding:2px;
@@ -37,3 +39,17 @@ div#TB_title {
 #TB_closeWindowButton:focus .tb-close-icon {
 	color: #808080!important;-webkit-box-shadow:none!important; box-shadow:none!important;
 } 
+
+div#TB_window {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 100%;
+    max-width: 90%;
+    margin: 0 !important;
+	overflow: hidden;
+}
+div#TB_iframeContent {
+    max-width: 100%;
+    box-sizing: border-box;
+}

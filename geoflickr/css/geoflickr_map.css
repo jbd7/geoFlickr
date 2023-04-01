@@ -1,47 +1,53 @@
 .nav, #main-menu, #main-nav-section, #mobile-menu-trigger-wrap, #wpadminbar  {
-    display: none;
+  display: none;
 }
 
 html {
-	padding: 0px!important;
-	margin: 0px!important;
+padding: 0px!important;
+margin: 0px!important;
 }
 
 body {
-	font-family: sans-serif;
-	margin:0px!important;
-	padding:0px!important;
-	text-align: center;
-	
+font-family: sans-serif;
+margin:0px!important;
+padding:0px!important;
+text-align: center;
+
 }
 
 h1 {
-	text-align: center;
-	margin: 0px;
-	font-family: sans-serif;
+text-align: center;
+margin: 0px;
+font-family: sans-serif;
 }
 
 #loader {
-  position: fixed;
-  left: 290px;
-  top: 180px;
-  z-index: -1;
-  border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid #555;
-  width: 50px;
-  height: 50px;
-  -webkit-animation: spin 1s linear infinite; /* Safari */
-  animation: spin 1s linear infinite;
+/* Makes it centered but absolute position, i.e. taking no space so the GMap goes right over it with no scrollbars */
+position: absolute;
+left: 0; 
+right: 0; 
+margin-left: auto; 
+margin-right: auto; 
+margin-inline: auto;
+top: 50px;
+/* Generates a loading wheel with no just CSS */
+z-index: -1;
+border: 5px solid #f3f3f3;
+border-radius: 50%;
+border-top: 5px solid #555;
+width: 50px;
+height: 50px;
+-webkit-animation: spin 1s linear infinite; /* Safari */
+animation: spin 1s linear infinite;
 }
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+0% { -webkit-transform: rotate(0deg); }
+100% { -webkit-transform: rotate(360deg); }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
 }

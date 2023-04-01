@@ -1,24 +1,23 @@
 === geoFlickr ===
 Contributors: jbd7
-Tags: flickr, geo, geotag, map, maps, google maps, google map, mapping
-Requires at least: 3.0
-Requires PHP: 5.3
-Tested up to: 6.1.1
-Stable tag: 1.2
+Tags: flickr, geo, geotag, geotagged, map, maps, google maps, google map, mapping, gps, exif, location, taken, photo, picture
+Tested up to: 6.2
+Stable tag: 1.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Donate link: https://www.buymeacoffee.com/jbd7
 
-geoFlickr displays a "location taken map" for all embedded Flickr photos that contain coordinates.
+GeoFlickr displays a map of the location where the photo was taken, for all embedded Flickr photos that contain GPS coordinates.
 
 == Description ==
 
-Wordpress plugin that displays a "location taken map" for all embedded Flickr photos that contain coordinates.
+GeoFlickr is a Wordpress plugin that displays a map of the location where the photo was taken, for all embedded Flickr photos that contain GPS coordinates.
 
-For every photo in a wordpress post/page that is hosted on Flickr, this plugin adds a small red balloon in the top left corner when the mouse is hovering over the photo. If the photo is geotagged on Flickr, a click on the balloon displays a pop-up featuring a Google Satellite map of the surroundings.
+For every photo in a wordpress post/page that is hosted on Flickr, this plugin adds a small red balloon in the top left corner when the mouse is hovering over the photo. If the photo is geotagged on Flickr, meaning it contains GPS coordinates in the EXIF metadata, a click on the balloon displays a pop-up featuring a Google Satellite map of the surroundings.
 
-Thanks to Tarique Sani, author of the Flickr foto info plugin, no longer maintained and not working anymore, on which geoFlickr is based.
+Thanks to Tarique Sani, author of the Flickr foto info plugin, no longer maintained and not working anymore, on which GeoFlickr is based.
 
-geoFlickr features:
+GeoFlickr features:
 
 *	very discrete overlay on the image
 *	jQuery and thickbox
@@ -29,12 +28,12 @@ geoFlickr features:
 
 == Installation ==
 
-1.	Install from your Wordpress site by adding a new plugin, search for geoFlickr
+1.	Install from your Wordpress site by adding a new plugin, search for GeoFlickr
 
 or
 
 1.	Upload the file geoflickr.zip into the '/wp-content/plugins/' folder of your Wordpress installation
-1.	Unzip the plugin to create the geoFlickr folder
+1.	Unzip the plugin to create the GeoFlickr folder
 1.	Activate the plugin through the 'Plugins' menu in WordPress
 
 == Upgrade Notice ==
@@ -46,7 +45,7 @@ Upgrade to this one if you want to recover functionality, however, the EXIF butt
 
 == Configuration ==
 
-1.	To configure plugin, go to 'Settings' -> 'geoFlickr' from the Wordpress dashboard
+1.	To configure plugin, go to 'Settings' -> 'GeoFlickr' from the Wordpress dashboard
 2. 	Enter your flickr API key. The key can be obtained for free by visiting https://www.flickr.com/services/apps/
 3.  Enter your Google Maps API key. The key can be set up, for free up to a certain threshold, via https://console.cloud.google.com/google/maps-apis/ by following https://support.google.com/googleapi/answer/6158862
 
@@ -58,7 +57,7 @@ The plugin automatically considers all posts and pages.
 
 == Thanks ==
 
-Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who developped Flickr foto info up to v1.4, up to WP3.5.2, until 2014
+Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who developped Flickr foto info up to v1.4, up to WP3.5.2, until 2014.
 
 == Screenshots ==
 
@@ -67,6 +66,12 @@ Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who dev
 3. Thickbox popup containing the map where the photo was taken
 
 == Changelog ==
+
+= 1.3 (20230401) = 
+* Tested with Wordpress 6.2
+* Added customization parameters: height offset, excluded classes
+* Made Thickbox responsive for narrow and mobile browsing
+* Hidden scrollbars on the Thickbox while the Google Map is loading
 
 = 1.2 (20230212) = 
 * Tested with Wordpress 6.1.1

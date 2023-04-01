@@ -7,6 +7,7 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 	var map;
 
 	$j.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.geo.getLocation&api_key=' + flickr_api_key + '&photo_id=' + flickr_id + '&format=json&jsoncallback=?',
+		{ 'User-Agent': 'GeoFlickr/1.3' },
         function(geodata){
 			if(geodata.stat != 'fail' && flickr_id) { 
 				centerLatitude  = geodata.photo.location.latitude;
@@ -49,17 +50,26 @@ function geoflickr_init(flickr_api_key, flickr_id) {
   					infowindow.open(map,marker);
 				});
 
-			} else if (flickr_id) {
-				// Flickr API call failed despite a Photo_id
+			} else if (geodata.stat == 'fail' && ! /^\d+$/.test(flickr_id)) {
+				// flickr_id not made of digits, something went off.
 				errorhtml = '<h2 style="color:grey;">Could not load map</h2>';
-				errorhtml += '<p style="color:grey;">Additionally, <a style="color:grey;" href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
+				errorhtml += '<p style="color:grey;">Flickr Image ID format incorrect. Please notify the webmaster.</p>';
+				
+				$j("#geoflickr_map").html(errorhtml);
+	
+			} else if (geodata.stat == 'fail' && flickr_id) {
+				// Flickr API call failed despite a Photo_id. Flickr Error codes: https://www.flickr.com/services/api/flickr.photos.geo.getLocation.htm
+				// Error sample: {"stat":"fail","code":100,"message":"Invalid API Key (Key has invalid format)"}
+				// */
+				errorhtml = '<h2 style="color:grey;">Could not load map</h2>';
+				errorhtml += '<p style="color:grey;">Additionally, <a style="color:grey;" href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: ' + geodata.message + '</p>';
 				
 				$j("#geoflickr_map").html(errorhtml);
 	
 			} else {
-				// Flickr API call failed but no Photo_id was passed yet
-				errorhtml = '<h2 style="color:white;">Location map loading ...</h2>';
-				errorhtml += '<p style="color:white;">Additionally, <a style="color:white;" href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> said: "+geodata.message+"</p>';
+				// Fallback. Flickr API call didn't respond, something may be off with the Photo_id.
+				errorhtml = '<h2 style="color:white; visibility: none;">Location map loading ...</h2>';
+				errorhtml += '<p style="color:white; visibility: none;">Additionally, <a style="color:white;" href="//www.flickr.com/services/api/flickr.photos.geo.getLocation.htm">Flickr API</a> is saying: ' + geodata.message + '</p>';
 				
 				$j("#geoflickr_map").html(errorhtml);
 			}		

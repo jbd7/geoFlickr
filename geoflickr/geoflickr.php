@@ -1,12 +1,25 @@
 <?php
 
 	/*
-	 Plugin Name: GeoFlickr
-	 Plugin URI: https://github.com/jbd7/geoFlickr/
-	 Description: Displays a "location taken map" for all embedded Flickr photos that contain coordinates.
-	 Author: jbd7
-	 Version: 1.2
-	 */
+	 * Plugin Name: GeoFlickr
+	 * Plugin URI: https://wordpress.org/plugins/geoflickr/
+	 * Description: GeoFlickr displays a map of the location where the photo was taken, for all embedded Flickr photos that contain GPS coordinates.
+	 * Author: jbd7
+	 * Author URI: https://github.com/jbd7
+	 * License: GNU General Public License (GPL), v3 (or newer)
+	 * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+	 * Version: 1.3
+	 * Requires at least: 5.0
+	 * Requires PHP: 5.3
+	 * 
+	 * Copyright (c) 2016 - 2023 jbd7. All rights reserved.
+	 * 
+	 * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+	 * 
+	 * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+	 * 
+	 * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+	 */	 
 
 	# Thanks to the original author of Flickr foto info: Tarique Sani (www.sanisoft.com)
 	
@@ -28,6 +41,9 @@
 			$translation_array = array(
 				//'flickr_api_key' => get_option('geoflickr_flickrapikey'),
 				//'google_api_key' => get_option('geoflickr_googleapikey'),
+				'geoflickrexcludedclasses' => get_option('geoflickr_excludedclasses'),
+				'geoflickrrequiredclasses' => get_option('geoflickr_requiredclasses'),
+				'geoflickrverticaloffset' => get_option('geoflickr_verticaloffset'),
 				'geoflickrplugindirurl' => plugin_dir_url( __FILE__ )
 				);
 
@@ -75,6 +91,10 @@
 	function geoflickr_admininit(){
 		register_setting( 'geoflickr_plugin_options', 'geoflickr_flickrapikey');
 		register_setting( 'geoflickr_plugin_options', 'geoflickr_googleapikey');
+		register_setting( 'geoflickr_plugin_options', 'geoflickr_excludedclasses');
+		register_setting( 'geoflickr_plugin_options', 'geoflickr_requiredclasses');
+		register_setting( 'geoflickr_plugin_options', 'geoflickr_verticaloffset');
+
 	}
 
 
@@ -82,38 +102,84 @@
 		add_options_page(__('GeoFlickr'), __('GeoFlickr'), 'manage_options', __FILE__, 'geoflickr_options_page');
 	}
 
+
 	function geoflickr_options_page() {
 	?>
 	<div class="wrap">
 		<div class="icon32" id="icon-options-general"><br></div>
 		<h2>GeoFlickr by <a href="https://github.com/jbd7/geoFlickr/" target="_blank">jbd7</a></h2>
+		<hr>
+		<p>GeoFlickr is aimed at Flickr photographers who are also WordPress bloggers, and who geotag their photos on Flickr.<br>
+		<hr>
 			<form method="post" action="options.php">
 				<?php settings_fields('geoflickr_plugin_options'); ?>
-				<?php $optionsflickr = get_option('geoflickr_flickrapikey'); ?>
-				<?php $optionsgoogle = get_option('geoflickr_googleapikey'); ?>
+				<?php $geoflickr_optionsflickr = get_option('geoflickr_flickrapikey'); ?>
+				<?php $geoflickr_optionsgoogle = get_option('geoflickr_googleapikey'); ?>
+				<?php $geoflickr_excludedclasses = get_option('geoflickr_excludedclasses'); ?>
+				<?php $geoflickr_requiredclasses = get_option('geoflickr_requiredclasses'); ?>
+				<?php $geoflickr_verticaloffset = get_option('geoflickr_verticaloffset'); ?>
 				<table class="form-table">
 					<tr>
 						<th scope="row">Flickr API Key</th>
 						<td>
-							<input type="text" size="57" name="geoflickr_flickrapikey" value="<?php echo $optionsflickr; ?>" />
+							<input type="text" size="57" name="geoflickr_flickrapikey" value="<?php echo $geoflickr_optionsflickr; ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"></th>
 						<td>
-						Enter your Flickr API key which you can find on the <a href="https://www.flickr.com/services/apps/" target="_blank">Flickr API page</a>. If you don't have one yet, you can request an API key from the <a href='http://www.flickr.com/services/apps/create/apply/' target="_blank">Flickr App Garden</a>. It's free for non-commercial websites.
+						Enter your Flickr API key which you can find on the <a href="https://www.flickr.com/services/apps/" target="_blank">Flickr API page</a>.<br>If you don't have one yet, you can request an API key from the <a href='http://www.flickr.com/services/apps/create/apply/' target="_blank">Flickr App Garden</a>. It's free for non-commercial websites and takes a minute to obtain.
 						</td>
 					</tr>
 					<tr>
-						<th scope="row">Google API Key</th>
+						<th scope="row">Google API Key (optional)</th>
 						<td>
-							<input type="text" size="57" name="geoflickr_googleapikey" value="<?php echo $optionsgoogle; ?>" />
+							<input type="text" size="57" name="geoflickr_googleapikey" value="<?php echo $geoflickr_optionsgoogle; ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"></th>
 						<td>
-						Can be left blank, but Google recommends one for Maps API v3.</br>Enter your Google API key enabled for Maps, which can be requested via <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" target="_blank">Google Developers</a>. It's free up to USD 200 of monthly usage, which covers about 1000 GeoFlickr requests per day.
+						Can be left blank, but Google recommends one for Maps API v3.<br>Enter your Google API key enabled for Maps, which can be requested via <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" target="_blank">Google Developers</a>. It's free up to USD 200 of monthly usage, which covers about 1000 GeoFlickr requests per day.
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Excluded classes (optional)</th>
+						<td>
+							<input type="text" size="57" name="geoflickr_excludedclasses" value="<?php echo $geoflickr_excludedclasses; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"></th>
+						<td>
+						Space-separated list of classes for <code>&lt;img&gt;</code> or a parent <code>&lt;figure&gt;</code> tag, on which GeoFlickr will not attach a location balloon.<br>
+						Can be left blank. Regardless of this field, images with the class <code>nogeoflickr</code> are automatically excluded.
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Required classes (optional)</th>
+						<td>
+							<input type="text" size="57" name="geoflickr_requiredclasses" value="<?php echo $geoflickr_requiredclasses; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"></th>
+						<td>
+						Space-separated list of classes for <code>&lt;img&gt;</code> or a parent <code>&lt;figure&gt;</code> tag, on which GeoFlickr will exclusively attach a location balloon.<br>
+						If left blank, GeoFlickr will attach the location balloon to all Flickr images found on the website.<br>
+						If not blank, GeoFlickr will only consider Flickr images with the Required classes, minus the Flickr images with the Excluded  classes.
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Vertical offset (optional)</th>
+						<td>
+							<input type="number" size="57" name="geoflickr_verticaloffset" value="<?php echo $geoflickr_verticaloffset; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"></th>
+						<td>
+						Offset (pixels) to add to the balloon, to adjust it vertically over a Flickr image. Can be left blank.<br>Use this to compensate for your layout if the ballons do not appear on the top left corner of images (e.g. a site banner added by a plugin). A positive value positions the ballon higher on the page, a negative value positions it lower.
 						</td>
 					</tr>
 				</table>
@@ -139,4 +205,19 @@
 
 		return $links;
 	}
+	
+	
+	add_filter( 'plugin_row_meta', 'geoflickr_plugin_row_meta', 10, 2 );
 
+	// Display links under plugin name
+
+	function geoflickr_plugin_row_meta( $links, $file ) {
+		if ( $file == plugin_basename( __FILE__ ) ) {
+			$geoflickr_pluginpage_link = '<a target="_blank" href="https://wordpress.org/plugins/geoflickr/">'.__('Visit plugin site').'</a>';
+			$geoflickr_donate_link = '<a target="_blank" href="https://www.buymeacoffee.com/jbd7">'.__('Donate').'</a>';
+			array_push( $links, $geoflickr_pluginpage_link );
+			array_push( $links, $geoflickr_donate_link );
+		}
+
+		return $links;
+	}
