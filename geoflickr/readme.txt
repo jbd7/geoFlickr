@@ -64,6 +64,7 @@ Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who dev
 1. Embedded Flickr photo on a webpage
 2. Embedded Flickr photo on a webpage while mouse on photo
 3. Thickbox popup containing the map where the photo was taken
+4. Plugin settings page
 
 == Changelog ==
 
