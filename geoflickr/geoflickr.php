@@ -8,7 +8,7 @@
 	 * Author URI: https://github.com/jbd7
 	 * License: GPL-3.0-or-later
 	 * License URI: https://www.gnu.org/licenses/gpl-3.0.html
-	 * Version: 1.3
+	 * Version: 1.4
 	 * Requires at least: 5.0
 	 * Requires PHP: 5.3
 	 * 
