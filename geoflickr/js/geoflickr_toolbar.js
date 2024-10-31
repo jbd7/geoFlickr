@@ -135,7 +135,7 @@ function geoflickr_show_toolbar(flickr_id, image_offset) {
 	  iframeWidth = window.innerWidth - 40; // Adjust the width for mobile devices
 	}
 	// TB width will have 29px added, height have 12 px added.
-    const toolbar_html = "<a href='?geoflickr_id=" + flickr_id + "&TB_iframe=true&height=400&width=" + iframeWidth + " ' class='thickbox' ><img title='Location' alt='Location' src='" + geoflickr_vars.geoflickrplugindirurl + "images/red_marker16.png' ></a>"
+    const toolbar_html = "<a href='?geoflickr_id=" + flickr_id + "&_wpnonce=" + geoflickr_vars.nonce + "&TB_iframe=true&height=400&width=" + iframeWidth + " ' class='thickbox' ><img title='Location' alt='Location' src='" + geoflickr_vars.geoflickrplugindirurl + "images/red_marker16.png' ></a>"
 
     $j(toolbar_div).html(toolbar_html).css({
         left: toolbar_left + 'px',
