@@ -2,11 +2,11 @@
 
 	/*
 	 * Plugin Name: GeoFlickr
-	 * Plugin URI: https://wordpress.org/plugins/geoflickr/
+	 * Plugin URI: https://www.wordpress.org/plugins/geoflickr/
 	 * Description: GeoFlickr displays a map of the location where the photo was taken, for all embedded Flickr photos that contain GPS coordinates.
 	 * Author: jbd7
 	 * Author URI: https://github.com/jbd7
-	 * License: GNU General Public License (GPL), v3 (or newer)
+	 * License: GPL-3.0-or-later
 	 * License URI: https://www.gnu.org/licenses/gpl-3.0.html
 	 * Version: 1.3
 	 * Requires at least: 5.0
@@ -27,6 +27,7 @@
 	# error_reporting(E_ALL);
 	# ini_set("display_errors", 1);
 
+	define('GEOFLICKR_VERSION', '1.4'); // Use this constant wherever versioning is needed
 
 	add_action('admin_menu', 'geoflickr_config_page');
 	add_action('admin_init', 'geoflickr_admininit' );
@@ -36,7 +37,7 @@
 			wp_enqueue_script('thickbox');
 			wp_enqueue_script('jquery');
 			$geoflickr_flickrToolbarJs = plugin_dir_url( __FILE__ ) . 'js/geoflickr_toolbar.js';
-			wp_register_script('geoflickr_flickrToolbarJs', $geoflickr_flickrToolbarJs, array('jquery') );
+			wp_register_script('geoflickr_flickrToolbarJs', $geoflickr_flickrToolbarJs, array('jquery'), GEOFLICKR_VERSION, false);
 			
 			$translation_array = array(
 				//'flickr_api_key' => get_option('geoflickr_flickrapikey'),
@@ -44,12 +45,14 @@
 				'geoflickrexcludedclasses' => get_option('geoflickr_excludedclasses'),
 				'geoflickrrequiredclasses' => get_option('geoflickr_requiredclasses'),
 				'geoflickrverticaloffset' => get_option('geoflickr_verticaloffset'),
-				'geoflickrplugindirurl' => plugin_dir_url( __FILE__ )
+				'geoflickrplugindirurl' => plugin_dir_url( __FILE__ ),
+				'nonce' => wp_create_nonce('geoflickr_nonce_action')
 				);
 
 			wp_localize_script( 'geoflickr_flickrToolbarJs', 'geoflickr_vars', $translation_array );
 
-			wp_enqueue_script( 'geoflickr_flickrToolbarJs', '', array(), null, true);
+			wp_enqueue_script('geoflickr_flickrToolbarJs', '', array('jquery'), GEOFLICKR_VERSION, true);
+
 		
 
 	}
@@ -59,7 +62,7 @@
 	function geoflickr_load_styles() {
 			wp_enqueue_style('thickbox');
 			$geoflickr_flickrToolbarCss =  plugin_dir_url( __FILE__ ) . 'css/geoflickr_toolbar.css';
-			wp_register_style('geoflickr_flickrToolbarCss', $geoflickr_flickrToolbarCss);
+			wp_register_style('geoflickr_flickrToolbarCss', $geoflickr_flickrToolbarCss, array(), GEOFLICKR_VERSION);
 			wp_enqueue_style( 'geoflickr_flickrToolbarCss');
 	}
 
@@ -98,10 +101,17 @@
 	}
 
 
-	function geoflickr_config_page() {
-		add_options_page(__('GeoFlickr'), __('GeoFlickr'), 'manage_options', __FILE__, 'geoflickr_options_page');
-	}
 
+
+	function geoflickr_config_page() {
+		add_options_page(
+			__('GeoFlickr', 'geoflickr'),
+			__('GeoFlickr', 'geoflickr'),
+			'manage_options',
+			'geoflickr_options',
+			'geoflickr_options_page'
+		);
+	}
 
 	function geoflickr_options_page() {
 	?>
@@ -122,7 +132,7 @@
 					<tr>
 						<th scope="row">Flickr API Key</th>
 						<td>
-							<input type="text" size="57" name="geoflickr_flickrapikey" value="<?php echo $geoflickr_optionsflickr; ?>" />
+							<input type="text" size="57" name="geoflickr_flickrapikey" value="<?php echo esc_attr($geoflickr_optionsflickr); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -134,7 +144,7 @@
 					<tr>
 						<th scope="row">Google API Key (optional)</th>
 						<td>
-							<input type="text" size="57" name="geoflickr_googleapikey" value="<?php echo $geoflickr_optionsgoogle; ?>" />
+							<input type="text" size="57" name="geoflickr_googleapikey" value="<?php echo esc_attr($geoflickr_optionsgoogle); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -146,7 +156,7 @@
 					<tr>
 						<th scope="row">Excluded classes (optional)</th>
 						<td>
-							<input type="text" size="57" name="geoflickr_excludedclasses" value="<?php echo $geoflickr_excludedclasses; ?>" />
+							<input type="text" size="57" name="geoflickr_excludedclasses" value="<?php echo esc_attr($geoflickr_excludedclasses); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -159,7 +169,7 @@
 					<tr>
 						<th scope="row">Required classes (optional)</th>
 						<td>
-							<input type="text" size="57" name="geoflickr_requiredclasses" value="<?php echo $geoflickr_requiredclasses; ?>" />
+							<input type="text" size="57" name="geoflickr_requiredclasses" value="<?php echo esc_attr($geoflickr_requiredclasses); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -173,7 +183,7 @@
 					<tr>
 						<th scope="row">Vertical offset (optional)</th>
 						<td>
-							<input type="number" size="57" name="geoflickr_verticaloffset" value="<?php echo $geoflickr_verticaloffset; ?>" />
+							<input type="number" size="57" name="geoflickr_verticaloffset" value="<?php echo esc_attr($geoflickr_verticaloffset); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -184,7 +194,7 @@
 					</tr>
 				</table>
 				<p class="submit">
-				<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+				<input type="submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'geoflickr'); ?>" />
 				</p>
 			</form>
 	</div>
@@ -198,7 +208,8 @@
 
 	function geoflickr_plugin_action_links( $links, $file ) {
 		if ( $file == plugin_basename( __FILE__ ) ) {
-			$geoflickr_posk_links = '<a href="'.get_admin_url().'options-general.php?page=geoflickr/geoflickr.php">'.__('Settings').'</a>';
+			$geoflickr_posk_links = '<a href="' . get_admin_url() . 'options-general.php?page=geoflickr_options">' . __('Settings', 'geoflickr') . '</a>';
+
 			// make the 'Settings' link appear first
 			array_unshift( $links, $geoflickr_posk_links );
 		}
@@ -213,8 +224,8 @@
 
 	function geoflickr_plugin_row_meta( $links, $file ) {
 		if ( $file == plugin_basename( __FILE__ ) ) {
-			$geoflickr_pluginpage_link = '<a target="_blank" href="https://wordpress.org/plugins/geoflickr/">'.__('Visit plugin site').'</a>';
-			$geoflickr_donate_link = '<a target="_blank" href="https://www.buymeacoffee.com/jbd7">'.__('Donate').'</a>';
+			$geoflickr_pluginpage_link = '<a target="_blank" href="https://wordpress.org/plugins/geoflickr/">'.__('Visit plugin site', 'geoflickr').'</a>';
+			$geoflickr_donate_link = '<a target="_blank" href="https://www.buymeacoffee.com/jbd7">'.__('Donate', 'geoflickr').'</a>';
 			array_push( $links, $geoflickr_pluginpage_link );
 			array_push( $links, $geoflickr_donate_link );
 		}

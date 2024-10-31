@@ -1,6 +1,6 @@
 <?php
 /**
-* Template Name: Blank Page
+* Template Name: Photo location map
 *
 */
 ?>
@@ -27,7 +27,7 @@ function geoflickr_load_mapcss() {
     	$wp_styles->queue = array();
 	//Enqueue blank template style
 	$geoflickr_flickrMapCss = plugin_dir_url( __FILE__ ) . 'css/geoflickr_map.css';
-	wp_register_style('geoflickr_flickrMapCss', $geoflickr_flickrMapCss);
+	wp_register_style('geoflickr_flickrMapCss', $geoflickr_flickrMapCss, array(), GEOFLICKR_VERSION);
 	wp_enqueue_style( 'geoflickr_flickrMapCss');
 	}
 
@@ -39,7 +39,7 @@ function geoflickr_load_mapjs() {
 	//Enqueue geoflickr_map
 	$geoflickr_flickrMapJs = plugin_dir_url( __FILE__ ) . 'js/geoflickr_map.js';
 	/* Defer true, and Dependency on googlemaps as geoflickr_init has a call to google */
-	wp_register_script('geoflickr_flickrMapJs', $geoflickr_flickrMapJs, array('jquery', 'thickbox')); 
+	wp_register_script('geoflickr_flickrMapJs', $geoflickr_flickrMapJs, array('jquery', 'thickbox'), GEOFLICKR_VERSION, false);
 	wp_enqueue_script( 'geoflickr_flickrMapJs');	
 	
 	if (file_exists('/wp-content/plugins/wp-responsive-menu/assets/js/wprmenu.js')) {
@@ -50,7 +50,8 @@ function geoflickr_load_mapjs() {
 	$google_js_url = "https://maps.googleapis.com/maps/api/js";
 	$google_api_key = get_option('geoflickr_googleapikey');
 	if ($google_api_key !== '') {$google_js_url .= "?key=" . $google_api_key. "&callback=geoflickr_hideloader";}
-	wp_enqueue_script( 'geoflickr_googlemaps', $google_js_url);
+	wp_enqueue_script('geoflickr_googlemaps', $google_js_url, array(), GEOFLICKR_VERSION, false);
+
 
 
 }
@@ -74,8 +75,9 @@ wp_head();
 	
 	<script type="text/javascript">
 		
-		var flickr_api_key = "<?php echo get_option('geoflickr_flickrapikey') ?>";
-		var flickr_id = "<?php echo $_GET['geoflickr_id']; ?>";
+		var flickr_api_key = "<?php echo esc_js(get_option('geoflickr_flickrapikey')); ?>";
+		var flickr_id = "<?php echo (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'geoflickr_nonce_action') && isset($_GET['geoflickr_id'])) ? esc_js(sanitize_text_field(wp_unslash($_GET['geoflickr_id']))) : ''; ?>";
+
 		window.onload = function() {
 			// Adapts window to smaller screens
 			var mapWidth = (window.parent.innerWidth <= 640 && window.parent.innerWidth > 50) ? window.parent.innerWidth - 40 + 28 - 46 : 628;

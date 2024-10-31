@@ -1,9 +1,9 @@
-=== geoFlickr ===
+=== GeoFlickr ===
 Contributors: jbd7
-Tags: flickr, geo, geotag, geotagged, map, maps, google maps, google map, mapping, gps, exif, location, taken, photo, picture
-Tested up to: 6.2
+Tags: flickr, map, geotagged, gps, geolocation
+Tested up to: 6.6
 Stable tag: 1.3
-License: GPLv3
+License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Donate link: https://www.buymeacoffee.com/jbd7
 
@@ -64,9 +64,12 @@ Thanks to [tariquesani](http://www.sanisoft.com/ "tarique sani website") who dev
 1. Embedded Flickr photo on a webpage
 2. Embedded Flickr photo on a webpage while mouse on photo
 3. Thickbox popup containing the map where the photo was taken
-4. Plugin settings page
 
 == Changelog ==
+
+= 1.4 (20241030) =
+* Tested with Wordpress 6.6
+* Security fixes
 
 = 1.3 (20230401) = 
 * Tested with Wordpress 6.2
