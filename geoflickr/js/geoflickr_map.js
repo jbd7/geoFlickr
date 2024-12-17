@@ -5,9 +5,11 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 	var description = '';
 	var startZoom = 13;
 	var map;
+	var geoflickr_version = geoflickr_vars.geoflickr_version;
+
 
 	$j.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.geo.getLocation&api_key=' + flickr_api_key + '&photo_id=' + flickr_id + '&format=json&jsoncallback=?',
-		{ 'User-Agent': 'GeoFlickr/1.3' },
+		{ 'User-Agent': 'GeoFlickr/' + geoflickr_version },
         function(geodata){
 			if(geodata.stat != 'fail' && flickr_id) { 
 				centerLatitude  = geodata.photo.location.latitude;
@@ -49,11 +51,19 @@ function geoflickr_init(flickr_api_key, flickr_id) {
 				google.maps.event.addListener(marker, 'click', function() {
   					infowindow.open(map,marker);
 				});
+			
+			} else if (geodata.stat == 'fail' && '' == flickr_id) {
+				// flickr_id not made of digits, something went off.
+				errorhtml = '<h2 style="color:grey;">Could not load map</h2>';
+				errorhtml += '<p style="color:grey;">Flickr Image ID incorrect. Please notify the webmaster.</p>';
+				
+				$j("#geoflickr_map").html(errorhtml);
+	
 
 			} else if (geodata.stat == 'fail' && ! /^\d+$/.test(flickr_id)) {
 				// flickr_id not made of digits, something went off.
 				errorhtml = '<h2 style="color:grey;">Could not load map</h2>';
-				errorhtml += '<p style="color:grey;">Flickr Image ID format incorrect. Please notify the webmaster.</p>';
+				errorhtml += '<p style="color:grey;">Flickr Image ID (' + flickr_id + ') incorrect. Please notify the webmaster.</p>';
 				
 				$j("#geoflickr_map").html(errorhtml);
 	

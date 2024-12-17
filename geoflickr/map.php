@@ -76,7 +76,14 @@ wp_head();
 	<script type="text/javascript">
 		
 		var flickr_api_key = "<?php echo esc_js(get_option('geoflickr_flickrapikey')); ?>";
-		var flickr_id = "<?php echo (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'geoflickr_nonce_action') && isset($_GET['geoflickr_id'])) ? esc_js(sanitize_text_field(wp_unslash($_GET['geoflickr_id']))) : ''; ?>";
+		// var flickr_id = "<?php echo (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'geoflickr_nonce_action') && isset($_GET['geoflickr_id'])) ? esc_js(sanitize_text_field(wp_unslash($_GET['geoflickr_id']))) : ''; ?>";
+
+		<?php
+		$geoflickr_id = isset($_GET['geoflickr_id']) ? sanitize_text_field(wp_unslash($_GET['geoflickr_id'])) : '';
+		$geoflickr_id = preg_replace('/\D/', '', $geoflickr_id); // Remove all non-digit characters
+		?>
+		var flickr_id = "<?php echo esc_js($geoflickr_id); ?>";
+
 
 		window.onload = function() {
 			// Adapts window to smaller screens

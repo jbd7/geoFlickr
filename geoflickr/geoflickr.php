@@ -8,7 +8,7 @@
 	 * Author URI: https://github.com/jbd7
 	 * License: GPL-3.0-or-later
 	 * License URI: https://www.gnu.org/licenses/gpl-3.0.html
-	 * Version: 1.4
+	 * Version: 1.41
 	 * Requires at least: 5.0
 	 * Requires PHP: 5.3
 	 * 
@@ -27,7 +27,7 @@
 	# error_reporting(E_ALL);
 	# ini_set("display_errors", 1);
 
-	define('GEOFLICKR_VERSION', '1.4'); // Use this constant wherever versioning is needed
+	define('GEOFLICKR_VERSION', '1.41'); // Use this constant wherever versioning is needed
 
 	add_action('admin_menu', 'geoflickr_config_page');
 	add_action('admin_init', 'geoflickr_admininit' );
@@ -46,6 +46,7 @@
 				'geoflickrrequiredclasses' => get_option('geoflickr_requiredclasses'),
 				'geoflickrverticaloffset' => get_option('geoflickr_verticaloffset'),
 				'geoflickrplugindirurl' => plugin_dir_url( __FILE__ ),
+				'geoflickr_version' => GEOFLICKR_VERSION, // Plugin version
 				'nonce' => wp_create_nonce('geoflickr_nonce_action')
 				);
 
