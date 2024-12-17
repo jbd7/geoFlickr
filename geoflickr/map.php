@@ -84,6 +84,8 @@ wp_head();
 		?>
 		var flickr_id = "<?php echo esc_js($geoflickr_id); ?>";
 
+	    var geoflickr_version = "<?php echo esc_js(GEOFLICKR_VERSION); ?>";
+
 
 		window.onload = function() {
 			// Adapts window to smaller screens
@@ -97,7 +99,7 @@ wp_head();
 			}
 			
 			// Loads the Google Map
-			geoflickr_init(flickr_api_key, flickr_id);
+			geoflickr_init(flickr_api_key, flickr_id, geoflickr_version);
 			
 			// Hides the loader
 			var loader = document.querySelector('#loader');

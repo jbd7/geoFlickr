@@ -1,12 +1,10 @@
-function geoflickr_init(flickr_api_key, flickr_id) {	    	
+function geoflickr_init(flickr_api_key, flickr_id, geoflickr_version) {	    	
 	$j=jQuery.noConflict();
 	var centerLatitude = 44.339206;
 	var centerLongitude = 1.208160;
 	var description = '';
 	var startZoom = 13;
 	var map;
-	var geoflickr_version = geoflickr_vars.geoflickr_version;
-
 
 	$j.getJSON('https://api.flickr.com/services/rest/?&method=flickr.photos.geo.getLocation&api_key=' + flickr_api_key + '&photo_id=' + flickr_id + '&format=json&jsoncallback=?',
 		{ 'User-Agent': 'GeoFlickr/' + geoflickr_version },
